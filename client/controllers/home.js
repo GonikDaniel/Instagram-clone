@@ -1,10 +1,16 @@
 (function(){
     'use strict';
 
-    angular.module('Instagram').controller('HomeCtrl', ['$scope', '$window', '$rootScope', '$auth', HomeCtrl]);
+    angular.module('Instagram').controller('HomeCtrl', ['$scope', '$window', '$rootScope', '$auth', 'API', HomeCtrl]);
 
-    function HomeCtrl ($scope, $window, $rootScope, $auth){
+    function HomeCtrl ($scope, $window, $rootScope, $auth, API){
         
+        if ($auth.isAuthenticated() && ($rootScope.currentUser && $rootScope.currentUser.username)) {
+            API.getFeed().success(function(data) {
+                $scope.photos = data;
+            });
+        }
+
         // check if logged in
         $scope.isAuthenticated = function() {
             return $auth.isAuthenticated();
@@ -16,6 +22,9 @@
                 .then(function(response) {
                     $window.localStorage.currentUser = JSON.stringify(response.data.user);
                     $rootScope.currentUser = JSON.parse($window.localStorage.currentUser);
+                    API.getFeed().success(function(data) {
+                        $scope.photos = data;
+                    });
                 });
         };
     }

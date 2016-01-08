@@ -33,6 +33,10 @@ var User = mongoose.model('User', new mongoose.Schema({
 
 mongoose.connect(config.db);
 
+mongoose.connection.on('error', function() {
+  console.error('MongoDB Connection Error. Please make sure MongoDB is running.');
+});
+
 var app = express();
 
 app.set('port', process.env.PORT || 3000);
@@ -42,6 +46,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+// Note: One month is equivalent to 2628000000 milliseconds. 
+// You may want to create a separate variable such as oneDay, 
+// oneWeek, oneMonth, or oneYear instead of defining 
+// milliseconds directly in the middleware.
 app.use(express.static(path.join(__dirname, 'public'), {
     maxAge: 2628000000
 }));
@@ -51,6 +59,10 @@ app.use(express.static(path.join(__dirname, 'public'), {
  | Login Required Middleware
  |--------------------------------------------------------------------------
  */
+
+// The next function is responsible for preventing unauthorized users 
+// from accessing protected routes. For instance, we don't want to allows 
+// users to access /api/feed route (Instagram feed) unless they are authenticated.
 function isAuthenticated(req, res, next) {
     if (!(req.headers && req.headers.authorization)) {
         return res.status(400).send({
@@ -78,7 +90,7 @@ function isAuthenticated(req, res, next) {
 
         req.user = user;
         next();
-    })
+    });
 }
 
 /*
@@ -145,7 +157,9 @@ app.post('/auth/signup', function(req, res) {
     }, function(err, existingUser) {
         if (existingUser) {
             return res.status(409).send({
-                message: 'Email is already taken.'
+                message: {
+                    email: 'Email is already taken.'
+                }
             });
         }
 

@@ -26,16 +26,22 @@
             $authProvider.loginUrl = 'http://localhost:3000/auth/login';
             $authProvider.signupUrl = 'http://localhost:3000/auth/signup';
             $authProvider.oauth2({
-              name: 'PhotoGallery',
+              name: 'instagram',
               url: 'http://localhost:3000/auth/instagram',
-              redirectUri: 'http://localhost:8080',
+              redirectUri: 'http://127.0.0.1:8080',
               clientId: 'b595fd95f2bc417abf8beb1f38197734',
               requiredUrlParams: ['scope'],
               scope: ['likes'],
               scopeDelimiter: '+',
               authorizationEndpoint: 'https://api.instagram.com/oauth/authorize'
             });
+        }])
 
-        }]);
+        .run(function($rootScope, $window, $auth){
+          console.log($auth.isAuthenticated());
+          if ($auth.isAuthenticated()) {
+            $rootScope.currentUser = JSON.parse($window.localStorage.currentUser);
+          }
+        });
     
 })();

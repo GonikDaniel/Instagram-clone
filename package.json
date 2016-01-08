@@ -12,19 +12,19 @@
     "express": "^4.9.0",
     "jwt-simple": "^0.2.0",
     "moment": "^2.8.3",
-    "mongoose": "^3.8.17",
+    "mongoose": "4.3.x",
     "request": "^2.44.0"
   },
   "devDependencies": {
-    "gulp": "^3.8.10",
-    "gulp-angular-templatecache": "^1.4.2",
-    "gulp-complexity": "^0.3.0",
-    "gulp-concat": "^2.4.2",
+    "gulp": "^3.9.0",
+    "gulp-angular-templatecache": "^1.8.0",
+    "gulp-complexity": "^0.3.2",
+    "gulp-concat": "^2.6.0",
     "gulp-csso": "^0.2.9",
     "gulp-filter": "^1.0.2",
-    "gulp-header": "^1.2.2",
-    "gulp-ng-annotate": "^0.4.1",
-    "gulp-recess": "^1.1.1",
-    "gulp-uglify": "^1.0.2"
+    "gulp-header": "^1.7.1",
+    "gulp-ng-annotate": "^0.4.4",
+    "gulp-recess": "^1.2.0",
+    "gulp-uglify": "^1.5.1"
   }
 }
